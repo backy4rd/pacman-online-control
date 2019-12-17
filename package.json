@@ -1,0 +1,19 @@
+{
+  "name": "pacman-online-control",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/s4mpi0l/pacman-online-control.git"
+  },
+  "author": "s4mpi0l",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/s4mpi0l/pacman-online-control/issues"
+  },
+  "homepage": "https://github.com/s4mpi0l/pacman-online-control#readme"
+}
