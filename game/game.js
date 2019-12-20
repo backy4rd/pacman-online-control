@@ -23,11 +23,6 @@ class Game {
     this.intervalId = setInterval(() => {
       this.enemies.forEach(enemy => enemy.move());
 
-      if (this.pacman.isDead(this.enemies)) {
-        console.log('game over');
-        this.endGame();
-      }
-
       if (this.pacman.eatEnemy(this.enemies)) {
         this.enemies.splice(
           this.enemies.findIndex(
@@ -44,6 +39,11 @@ class Game {
         pacman: this.pacman.position,
         enemies: this.enemies.map(enemy => enemy.position)
       });
+
+      if (this.pacman.isDead(this.enemies)) {
+        console.log('game over');
+        this.endGame();
+      }
     }, 500);
   }
 
@@ -84,16 +84,16 @@ class Game {
       this.score += 10;
     }
 
-    if (this.pacman.isDead(this.enemies)) {
-      console.log('game over');
-      this.endGame();
-    }
-
     callback({
       map: this.map,
       pacman: this.pacman.position,
       enemies: this.enemies.map(enemy => enemy.position)
     });
+
+    if (this.pacman.isDead(this.enemies)) {
+      console.log('game over');
+      this.endGame();
+    }
   }
 }
 

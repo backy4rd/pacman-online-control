@@ -18,6 +18,16 @@ app.get('/', (request, response) => {
 
 const game = new Game();
 
+//for demo
+game.startGame(dataEvery500miliseconds => {
+  io.emit('enemies move', dataEvery500miliseconds);
+  if (game.pacman.isDead(game.enemies)) {
+    io.emit('game over');
+    console.log('game over');
+  }
+});
+//----------------
+
 io.on('connection', socket => {
   socket.on('start game', () => {
     game.endGame();

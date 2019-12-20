@@ -11,7 +11,7 @@ class Pacman {
   constructor(map) {
     this.map = map;
     this.position = [14, 5];
-    this.isBuff = true;
+    this.isBuff = false;
   }
 
   move(direction) {
