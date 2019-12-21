@@ -10,11 +10,17 @@ const wall = 'w',
 class Game {
   constructor() {
     this.intervalId = 0;
+    this.gameOver = true;
+    this.map;
+    this.pacman;
+    this.enemies;
+    this.score;
   }
 
   startGame(callback = () => {}) {
     //initialization
-    this.map = [...map];
+    this.gameOver = false;
+    this.map = JSON.parse(JSON.stringify(map));
     this.pacman = new Pacman(this.map);
     this.enemies = new Array(5).fill().map(() => new Enemy(this.map));
     this.score = 0;
@@ -41,7 +47,6 @@ class Game {
       });
 
       if (this.pacman.isDead(this.enemies)) {
-        console.log('game over');
         this.endGame();
       }
     }, 500);
@@ -49,13 +54,12 @@ class Game {
 
   endGame() {
     clearInterval(this.intervalId);
+    this.gameOver = true;
     this.map = undefined;
-    this.pacman = undefined;
-    this.enemies = undefined;
-    this.score = 0;
   }
 
   pacmanMove(direction, callback = () => {}) {
+    if (this.gameOver) return;
     this.pacman.move(direction);
     const [pacmanX, pacmanY] = this.pacman.position;
 
@@ -91,7 +95,6 @@ class Game {
     });
 
     if (this.pacman.isDead(this.enemies)) {
-      console.log('game over');
       this.endGame();
     }
   }
