@@ -11,7 +11,7 @@ class Pacman {
   constructor(map) {
     this.map = map;
     this.position = [14, 5];
-    this.isBuff = false;
+    this.isBuff = 0;
   }
 
   move(direction) {
@@ -33,7 +33,7 @@ class Pacman {
     return (
       enemies.some(
         enemy => enemy.position.toString() === this.position.toString()
-      ) && this.isBuff === true
+      ) && this.isBuff === 1
     );
   }
 
@@ -41,7 +41,7 @@ class Pacman {
     return (
       enemies.some(
         enemy => enemy.position.toString() === this.position.toString()
-      ) && this.isBuff === false
+      ) && this.isBuff === 0
     );
   }
 

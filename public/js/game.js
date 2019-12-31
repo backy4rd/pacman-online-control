@@ -10,6 +10,20 @@ class Block {
     this.context.fillStyle = color;
     this.context.fillRect(this.x, this.y, this.square, this.square);
   }
+
+  drawDot(color) {
+    this.context.beginPath();
+    this.context.fillStyle = color;
+    this.context.arc(
+      this.x + this.square / 2,
+      this.y + this.square / 2,
+      this.square / 4,
+      0,
+      2 * Math.PI,
+    );
+    this.context.fill();
+    this.context.closePath();
+  }
 }
 
 class Game {
@@ -34,26 +48,38 @@ class Game {
     }
   }
 
-  draw(map, pacman, enemies) {
+  draw(map, pacman, enemies, isBuff) {
+    this.drawBackground();
     this.drawMap(map);
-    this.drawObject(pacman, enemies);
+    this.drawObject(pacman, enemies, isBuff);
   }
 
   drawMap(map) {
     for (let i = 0; i < this.xBlock; i++) {
       for (let j = 0; j < this.yBlock; j++) {
         if (map[i][j] == 'w') this.allBlock[i][j].draw('brown');
-        if (map[i][j] == '$') this.allBlock[i][j].draw('yellow');
+        if (map[i][j] == '$') this.allBlock[i][j].drawDot('yellow');
         if (map[i][j] == 'b') this.allBlock[i][j].draw('blue');
-        if (map[i][j] == '.') this.allBlock[i][j].draw('grey');
       }
     }
   }
 
-  drawObject(pacman, enemies) {
-    this.allBlock[pacman[0]][pacman[1]].draw('green');
+  drawObject(pacman, enemies, isBuff) {
+    if (isBuff) {
+      this.allBlock[pacman[0]][pacman[1]].draw('purple');
+    } else {
+      this.allBlock[pacman[0]][pacman[1]].draw('green');
+    }
     enemies.forEach(enemy => {
       this.allBlock[enemy[0]][enemy[1]].draw('red');
     });
+  }
+
+  drawBackground() {
+    for (let i = 0; i < this.xBlock; i++) {
+      for (let j = 0; j < this.yBlock; j++) {
+        this.allBlock[i][j].draw('grey');
+      }
+    }
   }
 }

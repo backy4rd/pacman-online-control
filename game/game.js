@@ -43,7 +43,9 @@ class Game {
       callback({
         map: this.map,
         pacman: this.pacman.position,
-        enemies: this.enemies.map(enemy => enemy.position)
+        enemies: this.enemies.map(enemy => enemy.position),
+        isBuff: this.pacman.isBuff,
+        score: this.score
       });
 
       if (this.pacman.isDead(this.enemies)) {
@@ -55,7 +57,6 @@ class Game {
   endGame() {
     clearInterval(this.intervalId);
     this.gameOver = true;
-    this.map = undefined;
   }
 
   pacmanMove(direction, callback = () => {}) {
@@ -64,10 +65,10 @@ class Game {
     const [pacmanX, pacmanY] = this.pacman.position;
 
     if (this.pacman.eatBuff()) {
-      this.pacman.isBuff = true;
+      this.pacman.isBuff++;
 
       setTimeout(() => {
-        this.pacman.isBuff = false;
+        this.pacman.isBuff--;
       }, 10000);
 
       this.map[pacmanX][pacmanY] = none;
@@ -91,7 +92,9 @@ class Game {
     callback({
       map: this.map,
       pacman: this.pacman.position,
-      enemies: this.enemies.map(enemy => enemy.position)
+      enemies: this.enemies.map(enemy => enemy.position),
+      isBuff: this.pacman.isBuff,
+      score: this.score
     });
 
     if (this.pacman.isDead(this.enemies)) {
