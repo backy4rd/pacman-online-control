@@ -37,6 +37,9 @@ class Game {
           ),
           1
         );
+        setTimeout(() => {
+          this.enemies.push(new Enemy(this.map));
+        }, 30000);
         this.score += 10;
       }
 
@@ -86,6 +89,9 @@ class Game {
         ),
         1
       );
+      setTimeout(() => {
+        this.enemies.push(new Enemy(this.map));
+      }, 30000);
       this.score += 10;
     }
 

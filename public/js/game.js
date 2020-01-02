@@ -6,23 +6,36 @@ class Block {
     this.context = context;
   }
 
-  draw(color) {
+  drawBlock(color) {
     this.context.fillStyle = color;
     this.context.fillRect(this.x, this.y, this.square, this.square);
   }
 
-  drawDot(color) {
+  drawDot(color, size) {
+    if (size > this.square / 2) return;
     this.context.beginPath();
     this.context.fillStyle = color;
     this.context.arc(
       this.x + this.square / 2,
       this.y + this.square / 2,
-      this.square / 4,
+      size,
       0,
       2 * Math.PI,
     );
     this.context.fill();
     this.context.closePath();
+  }
+
+  drawImg(url) {
+    const img = document.createElement('img');
+    img.src = url;
+    this.context.drawImage(
+      img,
+      this.x + 1,
+      this.y + 1,
+      this.square - 2,
+      this.square - 2,
+    );
   }
 }
 
@@ -57,28 +70,32 @@ class Game {
   drawMap(map) {
     for (let i = 0; i < this.xBlock; i++) {
       for (let j = 0; j < this.yBlock; j++) {
-        if (map[i][j] == 'w') this.allBlock[i][j].draw('brown');
-        if (map[i][j] == '$') this.allBlock[i][j].drawDot('yellow');
-        if (map[i][j] == 'b') this.allBlock[i][j].draw('blue');
+        if (map[i][j] == 'w') this.allBlock[i][j].drawBlock('brown');
+        if (map[i][j] == '$')
+          this.allBlock[i][j].drawDot('yellow', this.square / 4);
+        if (map[i][j] == 'b')
+          this.allBlock[i][j].drawDot('blue', this.square / 3);
       }
     }
   }
 
   drawObject(pacman, enemies, isBuff) {
     if (isBuff) {
-      this.allBlock[pacman[0]][pacman[1]].draw('purple');
+      this.allBlock[pacman[0]][pacman[1]].drawImg(
+        './public/img/pacman-buff.png',
+      );
     } else {
-      this.allBlock[pacman[0]][pacman[1]].draw('green');
+      this.allBlock[pacman[0]][pacman[1]].drawImg('./public/img/pacman.png');
     }
     enemies.forEach(enemy => {
-      this.allBlock[enemy[0]][enemy[1]].draw('red');
+      this.allBlock[enemy[0]][enemy[1]].drawImg('./public/img/ghost.png');
     });
   }
 
   drawBackground() {
     for (let i = 0; i < this.xBlock; i++) {
       for (let j = 0; j < this.yBlock; j++) {
-        this.allBlock[i][j].draw('grey');
+        this.allBlock[i][j].drawBlock('grey');
       }
     }
   }

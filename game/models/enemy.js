@@ -15,18 +15,20 @@ class Enemy {
     while (this.reachWall()) {
       this.direction = this.randomDirection();
     }
-    this.position = this.positionAfterMove();
+    if (this.reachCrossRoad()) {
+      this.direction = this.randomDirection();
+      while (this.reachWall()) {
+        this.direction = this.randomDirection();
+      }
+    }
+    this.position = this.positionAfterMove(this.direction);
   }
 
-  positionAfterMove() {
-    if (this.direction === left)
-      return [this.position[0], this.position[1] - 1];
-    if (this.direction === right)
-      return [this.position[0], this.position[1] + 1];
-    if (this.direction === up) 
-      return [this.position[0] - 1, this.position[1]];
-    if (this.direction === down)
-      return [this.position[0] + 1, this.position[1]];
+  positionAfterMove(direction) {
+    if (direction === left) return [this.position[0], this.position[1] - 1];
+    if (direction === right) return [this.position[0], this.position[1] + 1];
+    if (direction === up) return [this.position[0] - 1, this.position[1]];
+    if (direction === down) return [this.position[0] + 1, this.position[1]];
   }
 
   randomDirection() {
@@ -37,8 +39,21 @@ class Enemy {
     if (random_0to3 === 3) return down;
   }
 
+  reachCrossRoad() {
+    let ways = 0;
+    const pleft = this.positionAfterMove(left);
+    const pright = this.positionAfterMove(right);
+    const pup = this.positionAfterMove(up);
+    const pdown = this.positionAfterMove(down);
+    if (this.map[pleft[0]][pleft[1]] !== 'w') ways++;
+    if (this.map[pright[0]][pright[1]] !== 'w') ways++;
+    if (this.map[pup[0]][pup[1]] !== 'w') ways++;
+    if (this.map[pdown[0]][pdown[1]] !== 'w') ways++;
+    return ways > 2;
+  }
+
   reachWall() {
-    const [x, y] = this.positionAfterMove();
+    const [x, y] = this.positionAfterMove(this.direction);
     return this.map[x][y] === wall;
   }
 }

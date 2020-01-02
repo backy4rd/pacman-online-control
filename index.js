@@ -21,6 +21,7 @@ app.get('/control', (request, response) => {
 });
 
 const game = new Game();
+let cooldown = false;
 
 io.on('connection', socket => {
   socket.on('start game', () => {
@@ -36,6 +37,8 @@ io.on('connection', socket => {
   });
 
   socket.on('direct pacman', direction => {
+    if (cooldown) return;
+    if (game.pacman.reachWall(direction)) return;
     game.pacmanMove(direction, dataWhenPacmanMove => {
       io.emit('pacman move', dataWhenPacmanMove);
       if (game.pacman.isDead(game.enemies)) {
@@ -43,6 +46,8 @@ io.on('connection', socket => {
         console.log('game over');
       }
     });
+    cooldown = true;
+    setTimeout(() => (cooldown = false), 190);
   });
 
   socket.on('end gane', () => game.endGame());
