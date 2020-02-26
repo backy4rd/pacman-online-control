@@ -26,8 +26,8 @@ let cooldown = false;
 io.on('connection', socket => {
   socket.on('start game', () => {
     game.endGame();
-    game.startGame(dataEvery500miliseconds => {
-      io.emit('enemies move', dataEvery500miliseconds);
+    game.startGame(dataWhenEnemiesMove => {
+      io.emit('enemies move', dataWhenEnemiesMove);
       if (game.pacman.isDead(game.enemies)) {
         io.emit('game over');
         console.log('game over');

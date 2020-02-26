@@ -54,7 +54,7 @@ class Game {
       if (this.pacman.isDead(this.enemies)) {
         this.endGame();
       }
-    }, 500);
+    }, 200);
   }
 
   endGame() {
